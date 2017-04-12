@@ -164,6 +164,11 @@ mx_menu_main() {
           mx_main_autoInstall
           checklist[5]=1
           ;;
+        6)
+          mx_dolog " menu -> main -> action -> select autoinstall."
+          mx_menu_action_autoInstall
+          checklist[6]=1
+          ;;
         "q")
           mx_dolog " menu -> main -> action -> select quit."
           mx_menu_action_finish
@@ -175,6 +180,45 @@ mx_menu_main() {
         done
       done
 
+}
+
+mx_menu_action_autoInstall() { #{{{
+  mx_dolog " menu -> main -> display autoinstall."
+  while true
+  do
+    print_title "$MX_lang_main_auto_title"
+    print_info "$MX_lang_main_auto_info"
+    echo " 1) $(mainmenu_item "${checklist[21]}" "Standard install")"
+    echo " 2) $(mainmenu_item "${checklist[22]}" "Extended install (select for more info)")"
+    echo " 3) $(mainmenu_item "${checklist[23]}" "Minimal install")"
+    echo " 4) $(mainmenu_item "${checklist[24]}" "Server install")"
+    echo ""
+    echo " b) Back"
+    echo ""
+    print_line
+    LANGMENU+=" b"
+
+    read_input_options "$LANGMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+        ;;
+        2)
+        ;;
+        3)
+        ;;
+        4)
+        ;;
+        "b")
+        ;;
+        *)
+          invalid_option
+        ;;
+      esac
+    done
+    [[ $OPT == b || $OPT == d ]] && break;
+  done
+  #}}}
 }
 
 
