@@ -116,6 +116,54 @@ mx_menu_action_setLocales() { #{{{
 
 mx_menu_action_checkFull () { #{{{
   mx_dolog " menu -> main -> display full check menu."
+  while true
+  do
+    print_title "$MX_lang_menu_check_title"
+    print_info "$MX_lang_menu_check_info"
+    print_text "$MX_lang_menu_check_describtion"
+    echo " 1) $(mainmenu_item "${checklist[21]}" "$MX_lang_menu_check_doFull")"
+    echo " 2) $(mainmenu_item "${checklist[22]}" "$MX_lang_menu_check_doReport")"
+    echo ""
+    echo " b) Back"
+    echo ""
+    #print_footer
+    print_line
+    LANGMENU+=" b"
+
+    read_input_options "$LANGMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+          mx_dolog " menu -> check-> action -> select do fullcheck."
+          #checklist[11]=1
+          #checklist[12]=0
+          #MX_lang_set_default=0
+          #MX_Config_DefaultLang=de
+          #mx_lang_load
+          ;;
+        2)
+          mx_dolog " menu -> check -> action -> select create and look report."
+          #checklist[12]=1
+          #checklist[11]=0
+          #MX_lang_set_default=0
+          #MX_Config_DefaultLang=en
+          #mx_lang_load
+          ;;
+        "b")
+          if [[ ${MX_lang_set_default} -eq 1 ]]; then
+            #checklist[11]=0
+            #mx_lang_load
+            mx_dolog " language -> no language selected, using en_US as default."
+          fi
+          break
+          ;;
+        *)
+          invalid_option
+          ;;
+      esac
+    done
+    [[ $OPT == b || $OPT == d ]] && break;
+  done
   #}}}
 }
 
