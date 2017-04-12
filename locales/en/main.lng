@@ -15,7 +15,7 @@ MX_lang_main_finish_title="${Bold}${Yellow}ManjaroEx ${Purple}Install - Quit${Re
 MX_lang_main_finish_infoFinish="${Bold}${Green}Install: COMPLETED${Reset}"
 MX_lang_main_finish_infoCanceled="${Bold}${Red}Install: CANCELED${Reset}"
 MX_lang_main_finish_infoText="${White}You have successfully installed ManjaroEx.${Reset}"
-MX_lang_main_finish_infoTextCanceled="${White}You have canceled the installed script, nothing has been installed.\nTo consult help visit the wiki on github.${Reset}"
+MX_lang_main_finish_infoTextCanceled="${White}You have canceled the installed script, nothing has been installed.\nLogfile created, your settings has been saved.\nTo consult help visit the wiki on github.${Reset}"
 MX_lang_main_finish_extraThanks="${Cyan}Thanks, for using the ${Yellow}ManjaroEx ${Cyan}Install script${Reset}"
 
 ##Menu main items

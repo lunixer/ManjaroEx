@@ -15,7 +15,7 @@ MX_lang_main_finish_title="${Bold}${Yellow}ManjaroEx ${Purple}Install - Quit${Re
 MX_lang_main_finish_infoFinish="${Bold}${Green}Installation: FERTIG${Reset}"
 MX_lang_main_finish_infoCanceled="${Bold}${Red}Installation: ABGEBROCHEN${Reset}"
 MX_lang_main_finish_infoText="${White}ManjaroEx wurde erfolgreich installiert.${Reset}"
-MX_lang_main_finish_infoTextCanceled="${White}Die installation wurde abgebrochen.\nWeitere hilfe finden Sie im Wiki auf GitHub.${Reset}"
+MX_lang_main_finish_infoTextCanceled="${White}Die installation wurde abgebrochen, logfile erstellt. Ihre Einstellungen wurden gespeichert.\nWeitere hilfe finden Sie im Wiki auf GitHub.${Reset}"
 MX_lang_main_finish_extraThanks="${Cyan}Danke, für die nutzung von ${Yellow}ManjaroEx ${Cyan}Install script${Reset}"
 
 MX_lang_main_menu_item_1="Sprache & Tastatur wählen."
