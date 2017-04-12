@@ -33,7 +33,7 @@ mx_check_manjaro () { #{{{
     mx_dolog " check -> distro check failed: ${MX_Config_DistId}"
     MX_Error_Status=`expr ${MX_Error_Status} + 1`
   fi
-  sleep 0.5
+  sleep 0.4
   #}}}
 }
 
@@ -47,7 +47,7 @@ mx_check_root () { #{{{
     mx_dolog " check -> root check passed."
     MX_Error_Status=`expr ${MX_Error_Status} - 1`
   fi
-  sleep 0.8
+  sleep 0.5
   #}}}
 }
 
