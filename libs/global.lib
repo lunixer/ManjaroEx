@@ -1,0 +1,165 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#Created by lunixer mailto: lunixer[at]zoho[dot]com
+#-------------------------------------------------------------------------------
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+
+#GLOBAL VARIABLES {{{
+  checklist=( 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 )
+  # COLORS {{{
+    Bold=$(tput bold)
+    Underline=$(tput sgr 0 1)
+    Reset=$(tput sgr0)
+  # Regular Colors
+    Red=$(tput setaf 1)
+    Green=$(tput setaf 2)
+    Yellow=$(tput setaf 3)
+    Blue=$(tput setaf 4)
+    Purple=$(tput setaf 5)
+    Cyan=$(tput setaf 6)
+    White=$(tput setaf 7)
+  # Bold
+    BRed=${Bold}$(tput setaf 1)
+    BGreen=${Bold}$(tput setaf 2)
+    BYellow=${Bold}$(tput setaf 3)
+    BBlue=${Bold}$(tput setaf 4)
+    BPurple=${Bold}$(tput setaf 5)
+    BCyan=${Bold}$(tput setaf 6)
+    BWhite=${Bold}$(tput setaf 7)
+#}}}
+
+# DEFAULT PROMPT {{{
+    prompt1="Enter your option: "
+    prompt2="Enter n° of options (ex: 1 2 3 or 1-3): "
+    prompt3="You have to manually enter the following commands, then press ${BYellow}ctrl+d${Reset} or type ${BYellow}exit${Reset}:"
+#}}}
+
+# DEFAULT EDITOR {{{
+    if [[ -f /usr/bin/vim ]]; then
+      MX_Default_Editor="vim"
+    elif [[ -z $EDITOR ]]; then
+      MX_Default_Editor="nano"
+    fi
+#}}}
+
+export $DESKTOP_SESSION
+
+# DEFAULT FUCTIONS
+
+  pause_function() { #{{{
+      print_line
+      if [[ $AUTOMATIC_MODE -eq 0 ]]; then
+        read -e -sn 1 -p "Press enter to continue..."
+      fi
+    } #}}}
+
+  print_line() { #{{{
+      printf "%$(tput cols)s\n"|tr ' ' '-'
+  } #}}}
+
+  print_title() { #{{{
+      clear
+      print_line
+      echo -e "# ${Bold}$1${Reset}"
+      print_line
+      echo ""
+  } #}}}
+
+  print_info() { #{{{
+      #Console width number
+      T_COLS=`tput cols`
+      echo -e "${Bold}$1${Reset}\n" | fold -sw $(( $T_COLS - 18 )) | sed 's/^/\t/'
+  } #}}}
+
+  print_text() { #{{{
+      #Console width number
+      T_COLS=`tput cols`
+      echo -e "$1${Reset}\n" | fold -sw $(( $T_COLS - 5 )) | sed 's/^/\t/'
+  } #}}}
+
+  print_warning() { #{{{
+      T_COLS=`tput cols`
+      echo -e "${BYellow}$1${Reset}\n" | fold -sw $(( $T_COLS - 1 ))
+  } #}}}
+
+  print_danger() { #{{{
+      T_COLS=`tput cols`
+      echo -e "${BRed}$1${Reset}\n" | fold -sw $(( $T_COLS - 1 ))
+  } #}}}
+
+  print_footer() { #{{{
+    print_line
+    echo "${Bold}${White} -> Author : ${Reset}${MX_ProjectAuthor}"
+    echo "${Bold}${White} -> Version: ${Reset}${MX_ProjectVersion}"
+    echo "${Bold}${White} -> GitHub Report: ${Reset}${MX_ProjectUrl}"
+  } #}}}
+
+  mx_error_msg() { #{{{
+    local _msg="${1}"
+    clear
+    print_title "${Bold}${Yellow}Manjaro Extended ${Purple}Install script by ${Green}lunixer${Reset}"
+    print_info "${Bold}${White}Error:${Reset}"
+    print_text "${Red}${_msg}"
+    print_text "${Green}For additional help go to installer Wiki ${White}https://github.com/lunixer/manjaro-extended/wiki${Reset}"
+    print_footer
+    print_line
+    exit 1
+  } #}}}
+
+  cecho() { #{{{
+    echo -e "$1"
+    echo -e "$1" >>"$LOG"
+    tput sgr0;
+  } #}}}
+
+  ncecho() { #{{{
+    echo -ne "$1"
+    echo -ne "$1" >>"$LOG"
+    tput sgr0
+  } #}}}
+
+  spinny() { #{{{
+    echo -ne "\b${SPIN:i++%${#SPIN}:1}"
+  } #}}}
+
+  progress() { #{{{
+    ncecho "  ";
+    while true; do
+      kill -0 $pid &> /dev/null;
+        if [[ $? == 0 ]]; then
+          spinny
+          sleep 0.25
+        else
+          ncecho "\b\b";
+          wait $pid
+          retcode=$?
+          echo -ne "$pid's retcode: $retcode" >> $LOG
+          if [[ $retcode == 0 ]] || [[ $retcode == 255 ]]; then
+            cecho success
+          else
+            cecho failed
+            echo -e "$PKG" >> $PKG_FAIL
+            tail -n 15 $LOG
+        fi
+          break
+        fi
+      done
+    } #}}}
+
+  if [[ -e /etc/lsb-release ]]; then
+    source /etc/lsb-release
+  else
+    mx_error_msg "Missing file: lsb-release in /etc/. This package is required, you can use the command\n ${White}'sudo pacman -S lsb-release'${Red}, to install it."
+  fi

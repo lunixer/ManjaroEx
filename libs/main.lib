@@ -1,0 +1,330 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#Created by lunixer mailto: lunixer[at]zoho[dot]com
+#-------------------------------------------------------------------------------
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+
+MX_Config_statusInstall=1
+
+#Application check functions
+mx_main_finish(){
+  clear
+  print_title "$MX_lang_main_finish_title"
+  mx_dolog " Main -> menu -> display end screen."
+  if [[ $MX_Config_statusInstall == 1 ]]; then
+    print_info "$MX_lang_main_finish_infoCanceled"
+    print_text "$MX_lang_main_finish_infoTextCanceled"
+    mx_dolog " Main -> quit script by user."
+  else
+    print_info "$MX_lang_main_finish_infoFinish"
+    print_text "$MX_lang_main_finish_infoText"
+  fi
+  print_text "$MX_lang_main_finish_extraThanks"
+  print_footer
+  print_line
+  #REBOOT
+  #read -p "Reboot your system [y/N]: " OPTION
+  #[[ $OPTION == y ]] && reboot
+  exit 1
+}
+#}}}
+
+mx_check_manjaro () { #{{{
+  if [[ ${MX_Config_DistId} == "Manjaro" ]]; then
+    print_text "${White}Checking for Manjaro    ${Cyan}[${Green}passed${Cyan}]${Reset}"
+    mx_dolog " Modules -> welcome -> distro check passed: ${MX_Config_DistId}"
+    MX_Error_Status=0
+  elif [[ ${MX_Config_DistId} == "Arch" ]]; then
+      print_text "${White}Checking for Manjaro    ${Cyan}[${Yellow}warning${Cyan}]${Reset}\n${White}You are using ${Yellow}${MX_Config_DistId}${White}, there can be errors.${Reset}"
+      mx_dolog " Modules -> welcome -> distro check passed: ${MX_Config_DistId}"
+      MX_Error_Status=0
+  else
+    print_text "${White}Checking for Manjaro    ${Cyan}[${Red}failed${Cyan}]${Reset}\n${White}You are using ${Yellow}${MX_Config_DistId}${Reset}"
+    mx_dolog " Modules -> welcome -> distro check failed: ${MX_Config_DistId}"
+    MX_Error_Status=`expr ${MX_Error_Status} + 1`
+  fi
+  sleep 0.5
+  #}}}
+}
+
+mx_check_root () { #{{{
+  if [[ $EUID -ne 0 ]]; then
+    print_text "${White}Checking if is root     ${Cyan}[${Red}failed${Cyan}]${Reset}\n${White}You are not ${Yellow}'root'.${Reset}"
+    mx_dolog " Modules -> welcome -> root check failed!"
+    MX_Error_Status=`expr ${MX_Error_Status} + 1`
+  else
+    print_text "${White}Checking if is root     ${Cyan}[${Green}passed${Cyan}]${Reset}"
+    mx_dolog " Modules -> welcome -> root check passed."
+    MX_Error_Status=`expr ${MX_Error_Status} - 1`
+  fi
+  sleep 0.8
+  #}}}
+}
+
+mx_check_connection () { #{{{
+  XPINGS=$(( $XPINGS + 1 ))
+  connection_test() {
+    ping -q -w 1 -c 1 `ip r | grep default | awk 'NR==1 {print $3}'` &> /dev/null && return 1 || return 0
+  }
+  if connection_test; then
+    print_text "${White}Checking internet         ${Cyan}[${Red}failed${Cyan}]${Reset}\n${White}You are ${Yellow}'offline'.${Reset}"
+    mx_dolog " Modules -> welcome -> internet check failed."
+    MX_Error_Status=`expr ${MX_Error_Status} + 1`
+  else
+    MX_Config_myIp=`ifconfig eno1 |grep 'inet '  |awk '{print $2}' |sed 's/addr://'`
+    print_text "${White}Checking internet       ${Cyan}[${Green}${MX_Config_myIp}${Cyan}]${Reset}"
+    mx_dolog " Modules -> welcome -> internet check passed."
+    MX_Error_Status=`expr ${MX_Error_Status} - 1`
+  fi
+  # Fixing MX_Error_Status count with an constante
+  MX_Error_Status=`expr ${MX_Error_Status} + 2`
+  sleep 0.3
+  #}}}
+}
+
+
+#Application menu functions
+mx_main_setLang() { #{{{
+  MX_lang_set_default=1
+  mx_dolog " Main -> menu -> select language."
+  mx_dolog " Main -> menu -> display language menu."
+  while true
+  do
+    print_title "$MX_lang_main_lang_title"
+    print_info "$MX_lang_main_lang_info"
+    echo " 1) $(mainmenu_item "${checklist[11]}" "Deutsch (de_DE)")"
+    echo " 2) $(mainmenu_item "${checklist[12]}" "English (en_US)")"
+    echo ""
+    echo " b) Back"
+    echo ""
+    #print_footer
+    print_line
+    LANGMENU+=" b"
+
+    read_input_options "$LANGMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+          checklist[11]=1
+          checklist[12]=0
+          MX_lang_set_default=0
+          MX_Config_DefaultLang=de
+          mx_lang_load
+          ;;
+        2)
+          checklist[12]=1
+          checklist[11]=0
+          MX_lang_set_default=0
+          MX_Config_DefaultLang=en
+          mx_lang_load
+          ;;
+        "b")
+          if [[ ${MX_lang_set_default} -eq 1 ]]; then
+            checklist[1]=0
+            mx_lang_load
+          fi
+          break
+          ;;
+        *)
+          invalid_option
+          ;;
+      esac
+    done
+    [[ $OPT == b || $OPT == d ]] && break;
+  done
+  #}}}
+}
+
+mx_main_autoInstall() { #{{{
+  mx_dolog " Main -> menu -> select autoinstall."
+  mx_dolog " Main -> menu -> display autoinstall menu."
+  while true
+  do
+    print_title "$MX_lang_main_auto_title"
+    print_info "$MX_lang_main_auto_info"
+    echo " 1) $(mainmenu_item "${checklist[21]}" "Standard install")"
+    echo " 2) $(mainmenu_item "${checklist[22]}" "Extended install (select for more info)")"
+    echo " 3) $(mainmenu_item "${checklist[23]}" "Minimal install")"
+    echo " 4) $(mainmenu_item "${checklist[24]}" "Server install")"
+    echo ""
+    echo " b) Back"
+    echo ""
+    print_line
+    LANGMENU+=" b"
+
+    read_input_options "$LANGMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+        ;;
+        2)
+        ;;
+        3)
+        ;;
+        4)
+        ;;
+        "b")
+        ;;
+        *)
+          invalid_option
+        ;;
+      esac
+    done
+    [[ $OPT == b || $OPT == d ]] && break;
+  done
+  #}}}
+}
+
+
+
+#CLEAN ORPHAN PACKAGES {{{
+clean_orphan_packages(){
+  print_title "CLEAN ORPHAN PACKAGES"
+  pacman -Rsc --noconfirm $(pacman -Qqdt)
+  #pacman -Sc --noconfirm
+  pacman-optimize
+}
+#}}}
+#RECONFIGURE SYSTEM {{{
+reconfigure_system(){
+  print_title "KEYMAP - https://wiki.archlinux.org/index.php/KEYMAP"
+  print_info "The KEYMAP variable is specified in the /etc/rc.conf file. It defines what keymap the keyboard is in the virtual consoles. Keytable files are provided by the kbd package."
+  OPTION=n
+  while [[ $OPTION != y ]]; do
+    getkeymap
+    read_input_text "Confirm keymap: $KEYMAP"
+  done
+  localectl set-keymap ${KEYMAP}
+
+  print_title "HOSTNAME - https://wiki.archlinux.org/index.php/HOSTNAME"
+  print_info "A host name is a unique name created to identify a machine on a network.Host names are restricted to alphanumeric characters.\nThe hyphen (-) can be used, but a host name cannot start or end with it. Length is restricted to 63 characters."
+  read -p "Hostname [ex: archlinux]: " HN
+  hostnamectl set-hostname $HN
+
+  print_title "TIMEZONE - https://wiki.archlinux.org/index.php/Timezone"
+  print_info "In an operating system the time (clock) is determined by four parts: Time value, Time standard, Time Zone, and DST (Daylight Saving Time if applicable)."
+  OPTION=n
+  while [[ $OPTION != y ]]; do
+    settimezone
+    read_input_text "Confirm timezone ($ZONE/$SUBZONE)"
+  done
+  timedatectl set-timezone ${ZONE}/${SUBZONE}
+
+  print_title "HARDWARE CLOCK TIME - https://wiki.archlinux.org/index.php/Internationalization"
+  print_info "This is set in /etc/adjtime. Set the hardware clock mode uniformly between your operating systems on the same machine. Otherwise, they will overwrite the time and cause clock shifts (which can cause time drift correction to be miscalibrated)."
+  hwclock_list=('UTC' 'Localtime');
+  PS3="$prompt1"
+  select OPT in "${hwclock_list[@]}"; do
+    case "$REPLY" in
+      1)
+        timedatectl set-local-rtc false
+        ;;
+      2)
+        timedatectl set-local-rtc true
+        ;;
+      *) invalid_option ;;
+    esac
+    [[ -n $OPT ]] && break
+  done
+  timedatectl set-ntp true
+}
+#}}}
+
+#Application welcome {{{
+mx_main_welcome(){
+  clear
+  mx_dolog " Modules -> welcome -> display welcome screen."
+  print_title "${Bold}${Purple}Welcome to the ${Yellow}Manjaro Extended ${Purple}Install script by ${Green}lunixer${Reset}"
+  print_info "${Bold}${Red}Requirements:${Reset}"
+  mx_check_manjaro
+  mx_check_root
+  mx_check_connection
+  print_line
+  if [[ $MX_Error_Status != 0 ]]; then
+    echo "${Bold}${White} -> ${Reset}${Red}There are ${Underline}${Red}some${Reset} ${Red}Errors, exiting... (read logs for info)${Reset}"
+    mx_dolog " Modules -> welcome -> script exited with error, one or more checks failed."
+    print_footer
+    echo "${Reset}"
+    exit 1
+  else
+    echo "${Bold}${White} -> ${Reset}${Red}You can abort this script at any time with ${Underline}CTRL+C${Reset}"
+    mx_dolog " Modules -> welcome -> all checks passed."
+  fi
+  print_footer
+  pause_function
+  echo "${Reset}"
+} #}}}
+
+#Application Menu
+mx_main_steps() {
+
+  clear
+
+  while true
+  do
+    mx_dolog " Main -> display MainMenu."
+    print_title "$MX_lang_main_title"
+    print_info "$MX_lang_main_info"
+    echo " 1) $(mainmenu_item "${checklist[1]}" "$MX_lang_main_menu_item_changeLanguage")"
+    echo " 2) $(mainmenu_item "${checklist[2]}" "$MX_lang_main_menu_item_preConfig")"
+    echo " 3) $(mainmenu_item "${checklist[3]}" "$MX_lang_main_menu_item_startInstall")"
+    echo " 4) $(mainmenu_item "${checklist[4]}" "$MX_lang_main_menu_item_addMorePackages")"
+    echo ""
+    echo " 5) $(mainmenu_item "${checklist[5]}" "$MX_lang_main_menu_item_startAutoInstall")"
+    echo " 6) $(mainmenu_item "${checklist[6]}" "$MX_lang_main_menu_item_systemReconfigure")"
+    echo " 7) $(mainmenu_item "${checklist[7]}" "$MX_lang_main_menu_item_systemClean")"
+    echo ""
+    echo " 8) $(mainmenu_item "${checklist[8]}" "$MX_lang_main_menu_item_backupConfig")"
+    echo " 9) $(mainmenu_item "${checklist[9]}" "$MX_lang_main_menu_item_backupSystemFiles")"
+    echo ""
+    echo " q) Quit"
+    echo ""
+    print_footer
+    print_line
+    MAINMENU+=" q"
+    read_input_options "$MAINMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+          checklist[1]=1
+          mx_main_setLang
+          ;;
+        2)
+          checklist[2]=1
+          mx_main_setProfile
+          ;;
+        3)
+          mx_main_setProfile
+          checklist[3]=1
+          ;;
+        4)
+          mx_main_setProfile
+          checklist[4]=1
+          ;;
+        5)
+          mx_main_autoInstall
+          checklist[5]=1
+          ;;
+        "q")
+          mx_main_finish
+          ;;
+        *)
+          invalid_option
+          ;;
+          esac
+        done
+      done
+
+}

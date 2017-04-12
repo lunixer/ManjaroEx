@@ -1,0 +1,3 @@
+MX_lang_loaded="${Green}Sprache erfolgreich geladen.${Reset}"
+MX_lang_loadedFiles="${Cyan}Lade ${Bold}${White}"
+MX_lang_loadedFiles_end="${Cyan}Dateien aus dem Sprachordner.${Reset}"

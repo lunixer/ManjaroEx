@@ -1,0 +1,37 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#Created by lunixer mailto: lunixer[at]zoho[dot]com
+#-------------------------------------------------------------------------------
+
+MX_ProjectName="manjaro-extended"
+MX_ProjectVersion="0.2.0"
+MX_ProjectAuthor="lunixer"
+MX_ProjectUrl="http://www.github.com/lunixer/manjaro-extended"
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+# Run this script after your first boot with manjaro (as root)
+
+## Include bootstrap
+if [[ -e bootstrap.mx ]]; then
+  source bootstrap.mx
+else
+  echo "missing file: bootstrap.mx"
+  exit 1
+fi
+
+## starting scripts
+mx_main_welcome
+mx_lang_quikLoad
+mx_main_steps

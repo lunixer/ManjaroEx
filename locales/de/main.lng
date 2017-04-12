@@ -1,0 +1,29 @@
+#Main
+MX_lang_main_title="${Bold}${Yellow}Manjaro Extended Install${Purple} - Hauptmenü${Reset}"
+MX_lang_main_info="${Bold}${Red}Wählen Sie eine Option:${Reset}"
+
+##Menu language
+MX_lang_main_lang_title="${Bold}${Yellow}Manjaro Extended ${Purple}Schritt 1 - Sprache auswählen${Reset}"
+MX_lang_main_lang_info="${Bold}${Red}Standard Anwendungssprache auswählen:${Reset}"
+
+##Menu automated installation
+MX_lang_main_auto_title="${Bold}${Yellow}Manjaro Extended ${Purple}Schritt 5 - Automatische installation (optional)${Reset}"
+MX_lang_main_auto_info="${Bold}${Red}Profil für Autoinstall wählen:${Reset}"
+
+##Menu finish finish
+MX_lang_main_finish_title="${Bold}${Yellow}Manjaro Extended ${Purple}Install - Quit${Reset}"
+MX_lang_main_finish_infoFinish="${Bold}${Green}Installation: FERTIG${Reset}"
+MX_lang_main_finish_infoCanceled="${Bold}${Red}Installation: ABGEBROCHEN${Reset}"
+MX_lang_main_finish_infoText="${White}Manjaro Extended wurde erfolgreich installiert.${Reset}"
+MX_lang_main_finish_infoTextCanceled="${White}Die installation wurde abgebrochen.\nWeitere hilfe finden Sie im Wiki auf GitHub.${Reset}"
+MX_lang_main_finish_extraThanks="${Cyan}Danke, für die nutzung von ${Yellow}Manjaro Extended ${Cyan}Install script${Reset}"
+
+MX_lang_main_menu_item_changeLanguage="Anwendungssprache auswählen."
+MX_lang_main_menu_item_preConfig="Konfiguration beginnen."
+MX_lang_main_menu_item_startInstall="Installiere Manjaro Extended."
+MX_lang_main_menu_item_addMorePackages="Weiter Pakete manuell hinzufügen."
+MX_lang_main_menu_item_startAutoInstall="Automatische installation."
+MX_lang_main_menu_item_systemReconfigure="Rekonfiguriere System."
+MX_lang_main_menu_item_systemClean="Säubere Orphan Packages."
+MX_lang_main_menu_item_backupConfig="Installations Konfiguration speichern."
+MX_lang_main_menu_item_backupSystemFiles="Backup von System Dateien."

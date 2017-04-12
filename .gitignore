@@ -1,0 +1,6 @@
+src/setup
+work/
+testfiles/
+logs/
+.codecov.yml
+.coveralls.yml

@@ -1,0 +1,72 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#Created by lunixer mailto: lunixer[at]zoho[dot]com
+#-------------------------------------------------------------------------------
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+
+mx_lang_quikLoad() { #{{{
+
+  if [ -d "$Mx_Dir_Locales/$MX_Config_DefaultLang" ]; then
+
+    for f in `ls -1 ${Mx_Dir_Locales}/$MX_Config_DefaultLang/*.lng`; do
+     . $f
+    done
+  fi
+
+  mx_dolog " Language -> default language loaded."
+
+} #}}}
+
+mx_lang_load() { #{{{
+
+  if [[ $MX_lang_set_default -eq 1 ]]; then
+    print_title "${Bold}${Yellow}Manjaro Extended ${Purple}Step 0 - Language selection${Reset}"
+    print_info "${Yellow}Warning: ${Reset}"
+    print_text "${Red}Default language will be set to, English (en_US).${Reset}"
+    mx_dolog " Language -> set -> default."
+  fi
+
+  if [[ checklist[11] -eq 1 ]]; then
+    print_title "${Bold}${Yellow}Manjaro Extended ${Purple}Schritt 0 - Programm Sprache auswählen${Reset}"
+    print_info "${Bold}${Red}Standard Programm Sprache:${Reset}"
+    print_text "${Bold}${BYellow}Info: ${Reset}${Cyan}Sprache auf Deutsch (de_DE) gesetzt.${Reset}"
+    mx_dolog " Language -> set -> de_DE."
+
+  elif [[ checklist[12] -eq 1 ]]; then
+    print_title "${Bold}${Yellow}Manjaro Extended ${Purple}Step 0 - Language selection${Reset}"
+    print_info "${Bold}${Red}Select default language:${Reset}"
+    print_text "${Bold}${BYellow}Info: ${Reset}${Cyan}Language set to English (en_US).${Reset}"
+    mx_dolog " Language -> set -> en_US."
+
+  fi
+
+  Mx_Dir_Locales_count=0
+
+  mx_lang_select
+  print_text "${MX_lang_loadedFiles}${Mx_Dir_Locales_count}${Reset} ${MX_lang_loadedFiles_end}"
+  mx_dolog " Language -> set -> ${Mx_Dir_Locales_count} files found."
+  print_text "${MX_lang_loaded}"
+  pause_function
+  #}}}
+}
+
+mx_lang_select() {
+  if [ -d "$Mx_Dir_Locales/$MX_Config_DefaultLang" ]; then
+    for f in `ls -1 ${Mx_Dir_Locales}/${MX_Config_DefaultLang}/*.lng`; do
+     . $f
+     Mx_Dir_Locales_count=`expr ${Mx_Dir_Locales_count} + 1`
+    done
+  fi
+}

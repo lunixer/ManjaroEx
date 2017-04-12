@@ -1,0 +1,30 @@
+##Main
+MX_lang_main_title="${Bold}${Yellow}Manjaro Extended Install${Purple} - MainMenu${Reset}"
+MX_lang_main_info="${Bold}${Red}Select an option:${Reset}"
+
+##Menu language
+MX_lang_main_lang_title="${Bold}${Yellow}Manjaro Extended ${Purple}Step 1 - Language selection${Reset}"
+MX_lang_main_lang_info="${Bold}${Red}Select default language:${Reset}"
+
+##Menu automated installation
+MX_lang_main_auto_title="${Bold}${Yellow}Manjaro Extended ${Purple}Step 5 - Automated installation (optional)${Reset}"
+MX_lang_main_auto_info="${Bold}${Red}Select a profile for install:${Reset}"
+
+##Menu finish finish
+MX_lang_main_finish_title="${Bold}${Yellow}Manjaro Extended ${Purple}Install - Quit${Reset}"
+MX_lang_main_finish_infoFinish="${Bold}${Green}Install: COMPLETED${Reset}"
+MX_lang_main_finish_infoCanceled="${Bold}${Red}Install: CANCELED${Reset}"
+MX_lang_main_finish_infoText="${White}You have successfully installed Manjaro Extended.${Reset}"
+MX_lang_main_finish_infoTextCanceled="${White}You have canceled the installed script, nothing has been installed.\nTo consult help visit the wiki on github.${Reset}"
+MX_lang_main_finish_extraThanks="${Cyan}Thanks, for using the ${Yellow}Manjaro Extended ${Cyan}Install script${Reset}"
+
+##Menu main items
+MX_lang_main_menu_item_changeLanguage="Change application language."
+MX_lang_main_menu_item_preConfig="Enter configuration details."
+MX_lang_main_menu_item_startInstall="Install manjaro extended."
+MX_lang_main_menu_item_addMorePackages="Add more packages manualy."
+MX_lang_main_menu_item_startAutoInstall="Automated installation."
+MX_lang_main_menu_item_systemReconfigure="Reconfigure System."
+MX_lang_main_menu_item_systemClean="Clean Orphan Packages."
+MX_lang_main_menu_item_backupConfig="Backup install config."
+MX_lang_main_menu_item_backupSystemFiles="Backup system files."
