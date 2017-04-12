@@ -20,15 +20,15 @@ ManjaroEx is a script for [Manjaro Linux](https://manjaro.org/), where you can i
 
 Since there is no automatic installation, it must be done by hand. I'm sorry for that but it will come later.
 
-## Setup
-
-`ManjaroEx` requires an environment running `Manjaro`. Version `17 - Gnome` is recommended, though. For a full guide to setup and use this script, go to the wiki [HowTo ManjaroEx?][].
-
 ### Requirements:
 
 - Arch Linux "community" package [lsb-release](https://www.archlinux.de/?page=PackageDetails;repo=community;arch=x86_64;pkgname=lsb-release)
 
 > sudo pacman -Syu && sudo pacman -S lsb-release
+
+## Setup
+
+`ManjaroEx` requires an environment running `Manjaro`. Version `17 - Gnome` is recommended, though. For a full guide to setup and use this script, go to the wiki [HowTo ManjaroEx?][].
 
 ### ToDo
 
