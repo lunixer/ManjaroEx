@@ -16,6 +16,169 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-------------------------------------------------------------------------------
 
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#Created by lunixer mailto: lunixer[at]zoho[dot]com
+#-------------------------------------------------------------------------------
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+
+
+MX_ManjaroEx_File="$Mx_Dir/user_settings.cfg"
+
+#Application Menu actions
+mx_menu_action_finish(){ #{{{
+  clear
+  print_title "$MX_lang_main_finish_title"
+  mx_dolog " menu -> main -> display end screen."
+  if [[ $MX_Config_statusInstall == 1 ]]; then
+    print_info "$MX_lang_main_finish_infoCanceled"
+    print_text "$MX_lang_main_finish_infoTextCanceled"
+    mx_dolog " END -> quit script by user."
+  else
+    print_info "$MX_lang_main_finish_infoFinish"
+    print_text "$MX_lang_main_finish_infoText"
+  fi
+  print_text "$MX_lang_main_finish_extraThanks"
+  print_footer
+  print_line
+  #REBOOT
+  #read -p "Reboot your system [y/N]: " OPTION
+  #[[ $OPTION == y ]] && reboot
+  exit 1
+  #}}}
+}
+
+#Application menu functions
+mx_menu_action_setLocales() { #{{{
+  MX_lang_set_default=1
+  mx_dolog " menu -> main -> display language menu."
+  while true
+  do
+    print_title "$MX_lang_main_lang_title"
+    print_info "$MX_lang_main_lang_info"
+    echo " 1) $(mainmenu_item "${checklist[11]}" "Deutsch (de_DE)")"
+    echo " 2) $(mainmenu_item "${checklist[12]}" "English (en_US)")"
+    echo ""
+    echo " b) Back"
+    echo ""
+    #print_footer
+    print_line
+    LANGMENU+=" b"
+
+    read_input_options "$LANGMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+          mx_dolog " menu -> main -> action -> select language de."
+          checklist[11]=1
+          checklist[12]=0
+          MX_lang_set_default=0
+          MX_Config_DefaultLang=de
+          mx_lang_load
+          ;;
+        2)
+          mx_dolog " menu -> main -> action -> select language en."
+          checklist[12]=1
+          checklist[11]=0
+          MX_lang_set_default=0
+          MX_Config_DefaultLang=en
+          mx_lang_load
+          ;;
+        "b")
+          if [[ ${MX_lang_set_default} -eq 1 ]]; then
+            checklist[11]=0
+            mx_lang_load
+            mx_dolog " language -> no language selected, using en_US as default."
+          fi
+          break
+          ;;
+        *)
+          invalid_option
+          ;;
+      esac
+    done
+    [[ $OPT == b || $OPT == d ]] && break;
+  done
+  #}}}
+}
+
+#Application Menu
+mx_menu_main() {
+
+  clear
+
+  while true
+  do
+    mx_dolog " menu -> main -> display main menu."
+    print_title "$MX_lang_main_title"
+    print_info "$MX_lang_main_info"
+    echo " 1) $(mainmenu_item "${checklist[1]}" "${MX_lang_main_menu_item_1}")"
+    echo " 2) $(mainmenu_item "${checklist[2]}" "$MX_lang_main_menu_item_2")"
+    echo " 3) $(mainmenu_item "${checklist[3]}" "$MX_lang_main_menu_item_3")"
+    echo ""
+    echo " 4) $(mainmenu_item "${checklist[4]}" "$MX_lang_main_menu_item_4")"
+    echo " 5) $(mainmenu_item "${checklist[5]}" "$MX_lang_main_menu_item_5")"
+    echo " 6) $(mainmenu_item "${checklist[6]}" "$MX_lang_main_menu_item_6")"
+    echo ""
+    echo " 7) $(mainmenu_item "${checklist[7]}" "$MX_lang_main_menu_item_7")"
+    #echo " 8) $(mainmenu_item "${checklist[8]}" "$MX_lang_main_menu_item_8")"
+    echo ""
+    echo " q) Quit $MX_lang_main_menu_item_0"
+    echo ""
+    print_footer
+    print_line
+    MAINMENU+=" q"
+    read_input_options "$MAINMENU"
+    for OPT in ${OPTIONS[@]}; do
+      case "$OPT" in
+        1)
+          mx_dolog " menu -> main -> action -> select language."
+          checklist[1]=1
+          mx_menu_action_setLocales
+          ;;
+        2)
+          checklist[2]=1
+          mx_main_setProfile
+          ;;
+        3)
+          mx_main_setProfile
+          checklist[3]=1
+          ;;
+        4)
+          mx_main_setProfile
+          checklist[4]=1
+          ;;
+        5)
+          mx_main_autoInstall
+          checklist[5]=1
+          ;;
+        "q")
+          mx_dolog " menu -> main -> action -> select quit."
+          mx_menu_action_finish
+          ;;
+        *)
+          invalid_option
+          ;;
+          esac
+        done
+      done
+
+}
+
+
+
 read_input_options() { #{{{
     local line
     local packages

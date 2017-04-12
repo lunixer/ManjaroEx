@@ -1,0 +1,99 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------
+#Created by lunixer mailto: lunixer[at]zoho[dot]com
+#-------------------------------------------------------------------------------
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+
+MX_Config_statusInstall=1
+
+#Application check functions
+mx_check_manjaro () { #{{{
+  if [[ ${MX_Config_DistId} == "Manjaro" ]]; then
+    print_text "${White}Checking for Manjaro    ${Cyan}[${Green}passed${Cyan}]${Reset}"
+    mx_dolog " check -> distro check passed: ${MX_Config_DistId}"
+    MX_Error_Status=0
+  elif [[ ${MX_Config_DistId} == "Arch" ]]; then
+      print_text "${White}Checking for Manjaro    ${Cyan}[${Yellow}warning${Cyan}]${Reset}\n${White}You are using ${Yellow}${MX_Config_DistId}${White}, there can be errors.${Reset}"
+      mx_dolog " check -> distro check passed: ${MX_Config_DistId}"
+      MX_Error_Status=0
+  else
+    print_text "${White}Checking for Manjaro    ${Cyan}[${Red}failed${Cyan}]${Reset}\n${White}You are using ${Yellow}${MX_Config_DistId}${Reset}"
+    mx_dolog " check -> distro check failed: ${MX_Config_DistId}"
+    MX_Error_Status=`expr ${MX_Error_Status} + 1`
+  fi
+  sleep 0.5
+  #}}}
+}
+
+mx_check_root () { #{{{
+  if [[ $EUID -ne 0 ]]; then
+    print_text "${White}Checking if is root     ${Cyan}[${Red}failed${Cyan}]${Reset}\n${White}You are not ${Yellow}'root'.${Reset}"
+    mx_dolog " check -> root check failed!"
+    MX_Error_Status=`expr ${MX_Error_Status} + 1`
+  else
+    print_text "${White}Checking if is root     ${Cyan}[${Green}passed${Cyan}]${Reset}"
+    mx_dolog " check -> root check passed."
+    MX_Error_Status=`expr ${MX_Error_Status} - 1`
+  fi
+  sleep 0.8
+  #}}}
+}
+
+mx_check_connection () { #{{{
+  XPINGS=$(( $XPINGS + 1 ))
+  connection_test() {
+    ping -q -w 1 -c 1 `ip r | grep default | awk 'NR==1 {print $3}'` &> /dev/null && return 1 || return 0
+  }
+  if connection_test; then
+    print_text "${White}Checking internet         ${Cyan}[${Red}failed${Cyan}]${Reset}\n${White}You are ${Yellow}'offline'.${Reset}"
+    mx_dolog " check -> internet check failed."
+    MX_Error_Status=`expr ${MX_Error_Status} + 1`
+  else
+    MX_Config_myIp=`ifconfig eno1 |grep 'inet '  |awk '{print $2}' |sed 's/addr://'`
+    print_text "${White}Checking internet       ${Cyan}[${Green}${MX_Config_myIp}${Cyan}]${Reset}"
+    mx_dolog " check -> internet check passed."
+    MX_Error_Status=`expr ${MX_Error_Status} - 1`
+  fi
+  # Fixing MX_Error_Status count with an constante
+  MX_Error_Status=`expr ${MX_Error_Status} + 2`
+  sleep 0.3
+  #}}}
+}
+
+#Application welcome
+mx_check_boot(){ #{{{
+  clear
+  mx_dolog " check -> display screen."
+  print_title "${Bold}${Purple}Welcome to the ${Yellow}ManjaroEx ${Purple}Install script by ${Green}lunixer${Reset}"
+  print_info "${Bold}${Red}Requirements:${Reset}"
+  mx_check_manjaro
+  mx_check_root
+  mx_check_connection
+  print_line
+  if [[ $MX_Error_Status != 0 ]]; then
+    echo "${Bold}${White} -> ${Reset}${Red}There are ${Underline}${Red}some${Reset} ${Red}Errors, exiting... (read logs for info)${Reset}"
+    mx_dolog " check -> script exited with error, one or more checks failed."
+    print_footer
+    echo "${Reset}"
+    exit 1
+  else
+    echo "${Bold}${White} -> ${Reset}${Red}You can abort this script at any time with ${Underline}CTRL+C${Reset}"
+    mx_dolog " check -> all checks passed."
+  fi
+  print_footer
+  pause_function
+  echo "${Reset}"
+  #}}}
+}

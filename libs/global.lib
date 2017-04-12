@@ -109,10 +109,10 @@ export $DESKTOP_SESSION
   mx_error_msg() { #{{{
     local _msg="${1}"
     clear
-    print_title "${Bold}${Yellow}Manjaro Extended ${Purple}Install script by ${Green}lunixer${Reset}"
+    print_title "${Bold}${Yellow}ManjaroEx ${Purple}Install script by ${Green}lunixer${Reset}"
     print_info "${Bold}${White}Error:${Reset}"
     print_text "${Red}${_msg}"
-    print_text "${Green}For additional help go to installer Wiki ${White}https://github.com/lunixer/manjaro-extended/wiki${Reset}"
+    print_text "${Green}For additional help go to installer Wiki ${White}https://github.com/lunixer/ManjaroEx/wiki${Reset}"
     print_footer
     print_line
     exit 1

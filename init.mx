@@ -32,6 +32,6 @@ else
 fi
 
 ## starting scripts
-mx_main_welcome
+mx_check_boot
 mx_lang_quikLoad
-mx_main_steps
+mx_menu_main

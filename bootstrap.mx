@@ -48,31 +48,34 @@ else
   exit 1
 fi
 
-mx_dolog " globals, config, logging loaded."
+mx_dolog " bootstrap -> library -> main libs loaded."
 
 #BOOTSTRAP - Loading menu library
 if [[ -e $Mx_Dir_Library/menu.lib ]]; then
   source $Mx_Dir_Library/menu.lib
-  mx_dolog " menu library loaded."
+  mx_dolog " bootstrap -> library -> menu -> loaded."
 else
   print_danger "missing file: menu.lib in ${Mx_Dir_Library}"
+  mx_dolog " bootstrap -> library -> menu -> failed, library file not found."
   exit 1
 fi
 
 #BOOTSTRAP - Loading language library
 if [[ -e $Mx_Dir_Library/lang.lib ]]; then
   source $Mx_Dir_Library/lang.lib
-  mx_dolog " language library loaded."
+  mx_dolog " bootstrap -> library -> language > loaded."
 else
   print_danger "missing file: lang.lib in ${Mx_Dir_Library}"
+  mx_dolog " bootstrap -> library -> menu -> failed, library file not found."
   exit 1
 fi
 
-#BOOTSTRAP - Main (Menu) library
-if [[ -e $Mx_Dir_Library/main.lib ]]; then
-  source $Mx_Dir_Library/main.lib
-  mx_dolog " main library loaded."
+#BOOTSTRAP - Loading ManjaroEx library
+if [[ -e $Mx_Dir_Library/manjaroex.lib ]]; then
+  source $Mx_Dir_Library/manjaroex.lib
+  mx_dolog " bootstrap -> library -> manjaroex > loaded."
 else
-  print_danger "missing file: main.lib in ${Mx_Dir_Library}"
+  print_danger "missing file: manjaroex.lib in ${Mx_Dir_Library}"
+  mx_dolog " bootstrap -> library -> menu -> failed, library file not found."
   exit 1
 fi
