@@ -3,8 +3,8 @@
 #Created by lunixer mailto: lunixer[at]zoho[dot]com
 #-------------------------------------------------------------------------------
 
-MX_ProjectName="manjaro-extended"
-MX_ProjectVersion="0.2.0"
+MX_ProjectName="ManjaroEx"
+MX_ProjectVersion="0.2.2"
 MX_ProjectAuthor="lunixer"
 MX_ProjectUrl="http://www.github.com/lunixer/manjaro-extended"
 
