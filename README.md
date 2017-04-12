@@ -26,6 +26,7 @@ Since there is no automatic installation, it must be done by hand. I'm sorry for
 
 ### Requirements:
 
+- Manjaro Linux - Gnome Edition.
 - Arch Linux "community" package [lsb-release](https://www.archlinux.de/?page=PackageDetails;repo=community;arch=x86_64;pkgname=lsb-release)
 
 > sudo pacman -Syu && sudo pacman -S lsb-release
