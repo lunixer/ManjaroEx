@@ -4,9 +4,9 @@
 #-------------------------------------------------------------------------------
 
 MX_ProjectName="ManjaroEx"
-MX_ProjectVersion="0.2.2"
+MX_ProjectVersion="0.2.3"
 MX_ProjectAuthor="lunixer"
-MX_ProjectUrl="http://www.github.com/lunixer/manjaro-extended"
+MX_ProjectUrl="http://www.github.com/lunixer/ManjaroEx"
 
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
