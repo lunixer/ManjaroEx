@@ -19,7 +19,7 @@ MX_lang_main_finish_infoTextCanceled="${White}You have canceled the installed sc
 MX_lang_main_finish_extraThanks="${Cyan}Thanks, for using the ${Yellow}ManjaroEx ${Cyan}Install script${Reset}"
 
 ##Menu main items
-MX_lang_main_menu_item_1="Select language & keymap."
+MX_lang_main_menu_item_1="Select language."
 MX_lang_main_menu_item_2="Check Application requirements (optional)."
 MX_lang_main_menu_item_3="Select pre install configuration."
 
