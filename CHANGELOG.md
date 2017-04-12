@@ -1,3 +1,10 @@
+# Release 0.2.3
+
+- bd9a72 Remove main.lib
+  - actions, functions resorted in menu.lib and manjaroex.lib
+- 10111e Init v0.2.3 in develop branch
+- fef5e3 Adding Manjaro Linux Gnome Edition to requirements.
+
 # Release 0.2.2
 
 > There are so many things, so we can skip 0.2.1
