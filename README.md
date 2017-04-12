@@ -34,8 +34,5 @@ Since there is no automatic installation, it must be done by hand. I'm sorry for
 
  * ToDo
 
-
-
-
 [HowTo ManjaroEx?]:         http://github.com/lunixer/ManjaroEx/wiki/HowTo-ManjaroEx/
 [Pull Request]:         https://github.com/lunixer/ManjaroEx/pulls
