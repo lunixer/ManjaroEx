@@ -16,6 +16,12 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-------------------------------------------------------------------------------
 
+mxs_check_getBios() {}
+mxs_check_getKernel() {}
+
+
+
+
 mxs_check_sysinfo() { #{{{
   mx_dolog " check -> sysinfo -> gathering informations."
   #}}}
