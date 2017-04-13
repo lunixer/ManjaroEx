@@ -15,16 +15,13 @@ MX_lang_main_finish_title="${Bold}${Yellow}ManjaroEx ${Purple}Install - Quit${Re
 MX_lang_main_finish_infoFinish="${Bold}${Green}Installation: FERTIG${Reset}"
 MX_lang_main_finish_infoCanceled="${Bold}${Red}Installation: ABGEBROCHEN${Reset}"
 MX_lang_main_finish_infoText="${White}ManjaroEx wurde erfolgreich installiert.${Reset}"
-MX_lang_main_finish_infoTextCanceled="${White}Die Installation wurde abgebrochen, logfile erstellt. Ihre Einstellungen wurden gespeichert.\nWeitere Hilfe##Submenu fullcheck
-MX_lang_menu_check_title="${Bold}${Yellow}ManjaroEx ${Purple}Full check (optional)${Reset}"
-MX_lang_menu_check_info="${Bold}${Red}Please select an option: ${Reset}"
-MX_lang_menu_check_describtion="${Cyan}If you have errors durring the installation, do this check."
-MX_lang_menu_check_doFull="Let's do it!"
-MX_lang_menu_check_doReport="Create and view simple report." finden Sie im Wiki auf GitHub.${Reset}"
+MX_lang_main_finish_infoTextCanceled="${White}Die Installation wurde abgebrochen, logfile erstellt. Ihre Einstellungen wurden gespeichert.\nWeitere Hilfe"
 MX_lang_main_finish_extraThanks="${Cyan}Danke, für die nutzung von ${Yellow}ManjaroEx ${Cyan}Install script${Reset}"
 
+
+##Submenu fullcheck
 MX_lang_main_menu_item_1="Sprache wählen."
-MX_lang_main_menu_item_2="Installer auf Abhängigkeiten prüfen (optional)."
+MX_lang_main_menu_item_2="Systeminfo, Systemcheck, Logs, etc... - optional."
 MX_lang_main_menu_item_3="Voreinstellungen wählen."
 
 MX_lang_main_menu_item_4="Grundinstallation"
@@ -37,5 +34,7 @@ MX_lang_main_menu_item_0="(all configuration settings saved to: user_settings.cf
 MX_lang_menu_check_title="${Bold}${Yellow}ManjaroEx ${Purple}Vollständige überprüfung (optional)${Reset}"
 MX_lang_menu_check_info="${Bold}${Red}Bitte Option wählen: ${Reset}"
 MX_lang_menu_check_describtion="${Cyan}Sollten wärend der Installation Fehler auftreten, nutzen Sie diesen Test."
-MX_lang_menu_check_doFull="Let's do it!"
-MX_lang_menu_check_doReport="Erstelle und betrachte Report."
+MX_lang_menu_check_doFull="Systemcheck (überprüfen ob Systemkonfiguration Fehler verursachen könnten)"
+MX_lang_menu_check_doSysteminfo="Systeminfo"
+MX_lang_menu_check_doCleanup="System and ManjaroEx säuberung"
+MX_lang_menu_check_doViewlogs="Logfiles ansehen."

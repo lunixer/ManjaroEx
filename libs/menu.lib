@@ -120,17 +120,20 @@ mx_menu_action_checkFull () { #{{{
   do
     print_title "$MX_lang_menu_check_title"
     print_info "$MX_lang_menu_check_info"
-    print_text "$MX_lang_menu_check_describtion"
-    echo " 1) $(mainmenu_item "${checklist[21]}" "$MX_lang_menu_check_doFull")"
-    echo " 2) $(mainmenu_item "${checklist[22]}" "$MX_lang_menu_check_doReport")"
+    #print_text "$MX_lang_menu_check_describtion"
+    echo " 1) $(mainmenu_item "${checklist[21]}" "$MX_lang_menu_check_doSysteminfo")"
+    echo " 2) $(mainmenu_item "${checklist[22]}" "$MX_lang_menu_check_doFull")"
+    echo ""
+    echo " 3) $(mainmenu_item "${checklist[23]}" "$MX_lang_menu_check_doCleanup")"
+    echo " 4) $(mainmenu_item "${checklist[24]}" "$MX_lang_menu_check_doViewlogs")"
     echo ""
     echo " b) Back"
     echo ""
     #print_footer
     print_line
-    LANGMENU+=" b"
+    CHECKMENU+=" b"
 
-    read_input_options "$LANGMENU"
+    read_input_options "$CHECKMENU"
     for OPT in ${OPTIONS[@]}; do
       case "$OPT" in
         1)
@@ -228,7 +231,7 @@ mx_menu_action_import() { #{{{
 }
 
 #Application Menu
-mx_menu_main() {
+mx_menu_main() { #{{{
 
   clear
 
@@ -237,8 +240,8 @@ mx_menu_main() {
     mx_dolog " menu -> main -> display main menu."
     print_title "$MX_lang_main_title"
     print_info "$MX_lang_main_info"
-    echo " 1) $(mainmenu_item "${checklist[1]}" "${MX_lang_main_menu_item_1}")"
-    echo " 2) $(mainmenu_item "${checklist[2]}" "$MX_lang_main_menu_item_2")"
+    echo " 1) $(mainmenu_item "${checklist[1]}" "$MX_lang_main_menu_item_1")"
+    echo " 2) $(mainmenu_item "${checklist[2]}" "${MX_lang_main_menu_item_2}")"
     echo " 3) $(mainmenu_item "${checklist[3]}" "$MX_lang_main_menu_item_3")"
     echo ""
     echo " 4) $(mainmenu_item "${checklist[4]}" "$MX_lang_main_menu_item_4")"
@@ -298,10 +301,10 @@ mx_menu_main() {
         *)
           invalid_option
           ;;
-          esac
-        done
-      done
-
+      esac
+    done
+  done
+  #}}}
 }
 
 read_input() { #{{{
@@ -357,16 +360,16 @@ menu_item() { #{{{
     echo -e "$(checkbox_package "$1") ${Bold}${_package_name}${Reset}"
   } #}}}
 
-  mainmenu_item() { #{{{
-    #if the task is done make sure we get the state
-    if [ $1 == 1 -a "$3" != "" ]; then
-      state="${BGreen}[${Reset}$3${BGreen}]${Reset}"
-    fi
-    echo -e "$(checkbox "$1") ${Bold}$2${Reset} ${state}"
-  } #}}}
+mainmenu_item() { #{{{
+  #if the task is done make sure we get the state
+  if [ $1 == 1 -a "$3" != "" ]; then
+    state="${BGreen}[${Reset}$3${BGreen}]${Reset}"
+  fi
+  echo -e "$(checkbox "$1") ${Bold}$2${Reset} ${state}"
+} #}}}
 
-  invalid_option() { #{{{
-    print_line
-    echo "Invalid option. Try another one."
-    pause_function
-  } #}}}
+invalid_option() { #{{{
+  print_line
+  echo "Invalid option. Try another one."
+  pause_function
+} #}}}
