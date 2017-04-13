@@ -1,5 +1,8 @@
 # Release 0.2.3
 
+- 7ff37a Cleanup Submenu (2), adding first call function for submenu (2)
+- badfbc Adding System- info, check, cleanup -submenu
+- 23d02b Ending work on Mainmenu
 - bd9a72 Remove main.lib
   - actions, functions resorted in menu.lib and manjaroex.lib
 - 10111e Init v0.2.3 in develop branch
