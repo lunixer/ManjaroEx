@@ -33,9 +33,8 @@ mx_check_manjaro () { #{{{
     mx_dolog " check -> distro check failed: ${MX_Config_DistId}"
     MX_Error_Status=`expr ${MX_Error_Status} + 1`
   fi
-  sleep 0.4
-  #}}}
-}
+  sleep 0.3
+} #}}}
 
 mx_check_root () { #{{{
   if [[ $EUID -ne 0 ]]; then
@@ -47,9 +46,8 @@ mx_check_root () { #{{{
     mx_dolog " check -> root check passed."
     MX_Error_Status=`expr ${MX_Error_Status} - 1`
   fi
-  sleep 0.5
-  #}}}
-}
+  sleep 0.3
+} #}}}
 
 mx_check_connection () { #{{{
   XPINGS=$(( $XPINGS + 1 ))
@@ -71,6 +69,14 @@ mx_check_connection () { #{{{
   sleep 0.3
   #}}}
 }
+
+mx_package_installed() { #{{{
+  #check if a package is already installed
+  for PKG in $1; do
+    pacman -Q $PKG &> /dev/null && return 0;
+  done
+  return 1
+} #}}}
 
 #Application welcome
 mx_check_boot(){ #{{{
@@ -95,5 +101,4 @@ mx_check_boot(){ #{{{
   print_footer
   pause_function
   echo "${Reset}"
-  #}}}
-}
+} #}}}
