@@ -2,9 +2,6 @@
 Install additions to Manjaro Linux 17 - Gnome Edition
 
 [![Build](https://img.shields.io/travis/lunixer/ManjaroEx.svg?branch=master)](https://travis-ci.org/lunixer/ManjaroEx)
-
-[![Coverage Status](https://coveralls.io/repos/github/lunixer/ManjaroEx/badge.svg?branch=master)](https://coveralls.io/github/lunixer/ManjaroEx?branch=master)
-[![Codecov coverage status](https://codecov.io/gh/lunixer/ManjaroEx/branch/master/graph/badge.svg)](https://codecov.io/gh/lunixer/ManjaroEx)
 [![Github All Releases](https://img.shields.io/github/downloads/lunixer/ManjaroEx/total.svg)](https://github.com/lunixer/ManjaroEx/)
 [![Issues](https://img.shields.io/github/issues-raw/lunixer/ManjaroEx.svg)](https://github.com/lunixer/ManjaroEx/issues)
 
