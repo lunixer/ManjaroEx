@@ -16,13 +16,52 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-------------------------------------------------------------------------------
 
-mxs_check_getBios() {}
-mxs_check_getKernel() {}
+mxs_check_getBios() { #{{{
+  mx_dolog " check -> sysinfo -> Checking bios type."
+  if [[ "$(cat /sys/class/dmi/id/sys_vendor)" == 'Apple Inc.' ]] || [[ "$(cat /sys/class/dmi/id/sys_vendor)" == 'Apple Computer, Inc.' ]]; then
+    mx_dolog " check -> sysinfo -> Apple Bios found."
+    modprobe -r -q efivars || true  # if MAC
+  else
+    modprobe -q efivarfs            # all others
+  fi
+  if [[ -d "/sys/firmware/efi/" ]]; then
+    ## Mount efivarfs if it is not already mounted
+    if [[ -z $(mount | grep /sys/firmware/efi/efivars) ]]; then
+      mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+    fi
+    MX_Check_Sysinfo_Uefi=1
+    mx_dolog " check -> sysinfo -> UEFI Mode detected."
+  else
+    MX_Check_Sysinfo_Uefi=0
+    mx_dolog " check -> sysinfo -> BIOS Mode detected."
+  fi
+}
+#}}}
 
+mxs_check_getTrim() { #{{{
+  MX_Check_Sysinfo_Trim=`[[ -n $(hdparm -I /dev/sda | grep TRIM 2> /dev/null) ]] && TRIM=1`
+}
+#}}}
 
-
+mxs_check_getDesktop () { #{{{
+    mx_dolog " check -> sysinfo -> Checking Desktop."
+    MX_Check_Sysinfo_Desktop="none"
+    if [[ `pacman -Q gnome-desktop` -eq 1 ]]; then
+      mx_dolog " check -> sysinfo -> Gnome desktop found."
+      MX_Check_Sysinfo_Desktop="Gnome"
+    fi
+} #}}}
 
 mxs_check_sysinfo() { #{{{
   mx_dolog " check -> sysinfo -> gathering informations."
-  #}}}
+  mxs_check_getBios
+  mxs_check_getTrim
+  mxs_check_getDesktop
 }
+#}}}
+
+mxs_check_outputHead() { #{{{
+  print_title ""
+  print_info ""
+}
+#}}}
