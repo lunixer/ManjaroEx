@@ -138,11 +138,8 @@ mx_menu_action_checkFull () { #{{{
       case "$OPT" in
         1)
           mx_dolog " menu -> check-> action -> select system informations."
-          #checklist[11]=1
-          #checklist[12]=0
-          #MX_lang_set_default=0
-          #MX_Config_DefaultLang=de
-          #mx_lang_load
+          checklist[21]=0
+          mxs_check_sysinfo
           ;;
         2)
           mx_dolog " menu -> check -> action -> select system chek."
