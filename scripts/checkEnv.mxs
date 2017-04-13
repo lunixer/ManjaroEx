@@ -20,12 +20,11 @@ mxs_check_getBios() { #{{{
   mx_dolog " check -> sysinfo -> Checking bios type."
   if [[ "$(cat /sys/class/dmi/id/sys_vendor)" == 'Apple Inc.' ]] || [[ "$(cat /sys/class/dmi/id/sys_vendor)" == 'Apple Computer, Inc.' ]]; then
     mx_dolog " check -> sysinfo -> Apple Bios found."
-    modprobe -r -q efivars || true  # if MAC
+    modprobe -r -q efivars || true
   else
-    modprobe -q efivarfs            # all others
+    modprobe -q efivarfs
   fi
   if [[ -d "/sys/firmware/efi/" ]]; then
-    ## Mount efivarfs if it is not already mounted
     if [[ -z $(mount | grep /sys/firmware/efi/efivars) ]]; then
       mount -t efivarfs efivarfs /sys/firmware/efi/efivars
     fi
@@ -45,23 +44,96 @@ mxs_check_getTrim() { #{{{
 
 mxs_check_getDesktop () { #{{{
     mx_dolog " check -> sysinfo -> Checking Desktop."
+    MX_Check_Sysinfo_DesktopCount=0
     MX_Check_Sysinfo_Desktop="none"
-    if [[ `pacman -Q gnome-desktop` -eq 1 ]]; then
+    if [ ps -e | grep -E '^.* gnome-shell$' -ne 0 ]; then
+      return 0
+    else
       mx_dolog " check -> sysinfo -> Gnome desktop found."
-      MX_Check_Sysinfo_Desktop="Gnome"
+      MX_Check_Sysinfo_DesktopGnome=1
+      MX_Check_Sysinfo_DesktopGnomeVersion=`gnome-shell --version | awk '{print $3}'`
+      MX_Check_Sysinfo_DesktopCount=`expr $MX_Check_Sysinfo_DesktopCount + 1`
+      mx_dolog " check -> sysinfo -> Gnome version: $MX_Check_Sysinfo_DesktopGnomeVersion"
     fi
+
+    if [ ps -e | grep -E '^.* kded4$' -ne 0 ]; then
+      return 0
+    else
+      mx_dolog " check -> sysinfo -> KDE4 desktop found."
+      MX_Check_Sysinfo_DesktopKde=1
+      MX_Check_Sysinfo_DesktopKdeVersion=`kded4 --version | grep -m 1 'KDE' | awk -F ':' '{print $2}' | awk '{print $1}'`
+      MX_Check_Sysinfo_DesktopCount=`expr $MX_Check_Sysinfo_DesktopCount + 1`
+      mx_dolog " check -> sysinfo -> KDE4 version: $MX_Check_Sysinfo_DesktopKdeVersion"
+    fi
+
+    if [ ps -e | grep -E '^.* xfce4-session$' -ne 0 ]; then
+      return 0
+    else
+      mx_dolog " check -> sysinfo -> Xfce4 desktop found."
+      MX_Check_Sysinfo_DesktopXfce=1
+      MX_Check_Sysinfo_DesktopXfceVersion=`xfce4-session --version | grep xfce4-session | awk '{print $2}'`
+      MX_Check_Sysinfo_DesktopCount=`expr $MX_Check_Sysinfo_DesktopCount + 1`
+      mx_dolog " check -> sysinfo -> Xfce4 version: $MX_Check_Sysinfo_DesktopXfceVersion"
+    fi
+
+    if [ ps -e | grep -E 'unity-panel' -ne 0 ]; then
+      return 0
+    else
+      mx_dolog " check -> sysinfo -> Unity desktop found."
+      MX_Check_Sysinfo_DesktopUnity=1
+      MX_Check_Sysinfo_DesktopUnityVersion=`unity --version | awk '{print $2}'`
+      MX_Check_Sysinfo_DesktopCount=`expr $MX_Check_Sysinfo_DesktopCount + 1`
+      mx_dolog " check -> sysinfo -> Unity version: $MX_Check_Sysinfo_DesktopUnityVersion"
+    fi
+
+    if [ ps -e | grep -E '^.* cinnamon$' -ne 0 ]; then
+      return 0
+    else
+      mx_dolog " check -> sysinfo -> Cinnamon desktop found."
+      MX_Check_Sysinfo_DesktopCinnamon=1
+      MX_Check_Sysinfo_DesktopCinnamonVersion=`cinnamon --version | awk '{print $2}'`
+      MX_Check_Sysinfo_DesktopCount=`expr $MX_Check_Sysinfo_DesktopCount + 1`
+      mx_dolog " check -> sysinfo -> Cinnamon version: $MX_Check_Sysinfo_DesktopCinnamonVersion"
+    fi
+
+    if [ ps -e | grep -E '^.* mate-panel$' -ne 0 ]; then
+      return 0
+    else
+      mx_dolog " check -> sysinfo -> Mate desktop found."
+      MX_Check_Sysinfo_DesktopMate=1
+      MX_Check_Sysinfo_DesktopMateVersion=`mate-about --version | awk '{print $4}'`
+      MX_Check_Sysinfo_DesktopCount=`expr $MX_Check_Sysinfo_DesktopCount + 1`
+      mx_dolog " check -> sysinfo -> Mate version: $MX_Check_Sysinfo_DesktopMateVersion"
+    fi
+
+
+
 } #}}}
+
+mxs_check_getHostname() { #{{{
+  mx_dolog " check -> sysinfo -> Checking hostname."
+  }
+#}}}
 
 mxs_check_sysinfo() { #{{{
   mx_dolog " check -> sysinfo -> gathering informations."
-  mxs_check_getBios
-  mxs_check_getTrim
-  mxs_check_getDesktop
+
+  print_title ""
+  print_info ""
+
+  print_text "Informations about your system."
+
+  #mxs_check_getBios
+  #mxs_check_getTrim
+  #mxs_check_getDesktop
+  print_footer
+  print_line
+  pause_function
+
 }
 #}}}
 
 mxs_check_outputHead() { #{{{
-  print_title ""
-  print_info ""
+
 }
 #}}}

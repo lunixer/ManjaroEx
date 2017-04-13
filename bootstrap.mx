@@ -51,16 +51,6 @@ fi
 
 mx_dolog " bootstrap -> library -> main libs loaded."
 
-#BOOTSTRAP - Loading menu library
-if [[ -e $Mx_Dir_Library/menu.lib ]]; then
-  source $Mx_Dir_Library/menu.lib
-  mx_dolog " bootstrap -> library -> menu -> loaded."
-else
-  print_danger "missing file: menu.lib in ${Mx_Dir_Library}"
-  mx_dolog " bootstrap -> library -> menu -> failed, library file not found."
-  exit 1
-fi
-
 #BOOTSTRAP - Loading language library
 if [[ -e $Mx_Dir_Library/lang.lib ]]; then
   source $Mx_Dir_Library/lang.lib
@@ -86,5 +76,15 @@ if [[ -e $Mx_Dir_Scripts/checkEnv.mxs ]]; then
   source $Mx_Dir_Scripts/checkEnv.mxs
 else
   echo "missing file: checkEnv.mxs in ${Mx_Dir_Scripts}"
+  exit 1
+fi
+
+#BOOTSTRAP - Loading menu library
+if [[ -e $Mx_Dir_Library/menu.lib ]]; then
+  source $Mx_Dir_Library/menu.lib
+  mx_dolog " bootstrap -> library -> menu -> loaded."
+else
+  print_danger "missing file: menu.lib in ${Mx_Dir_Library}"
+  mx_dolog " bootstrap -> library -> menu -> failed, library file not found."
   exit 1
 fi
